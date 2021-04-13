@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">球队计分</string>
+    <string name="zero">0</string>
+    <string name="btn1a">+1</string>
+    <string name="btn2a">+2</string>
+    <string name="btn3a">+3</string>
+    <string name="btn4a">reset</string>
+    <string name="btn1b">+1</string>
+    <string name="btn2b">+2</string>
+    <string name="btn3b">+3</string>
+    <string name="btn4b">reset</string>
+    <string name="TeamNameA">Team A</string>
+    <string name="TeamNameB">Team B</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name2">汇率转换</string>
+    <string name="view">汇率转换</string>
+    <string name="btn8">美元</string>
+    <string name="btn9">欧元</string>
+    <string name="btn10">韩元</string>
+</resources>
