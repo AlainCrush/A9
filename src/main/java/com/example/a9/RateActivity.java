@@ -16,6 +16,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -139,12 +144,35 @@ public class RateActivity extends AppCompatActivity implements Runnable {
     public void run() {
         URL url =null;
         try {
-            url =new URL("https://www.usd-cny.com/");
-            HttpURLConnection http =(HttpURLConnection)url.openConnection();
-            InputStream in =http.getInputStream();
+            /*url =new URL("https://www.usd-cny.com/");
+            HttpURLConnection http =(HttpURLConnection)url.openConnection();//连接URL
+            InputStream in =http.getInputStream();//返回输入流
 
-            String html =inputStream2String(in);
-            Log.i(TAG, "html="+html);
+            String html =inputStream2String(in);//转化为字符串
+            Log.i(TAG, "html="+html);*/
+            Document doc = Jsoup.connect("https://www.usd-cny.com/bankofchina.htm").get();
+            Log.i(TAG, "run: title="+doc.title());
+            //获取汇率
+            //Euro:  body > section > div > div > article > table > tbody > tr:nth-child(8) > td:nth-child(2)
+            //Won:   body > section > div > div > article > table > tbody > tr:nth-child(14) > td:nth-child(2)
+            //dollar:body > section > div > div > article > table > tbody > tr:nth-child(27) > td:nth-child(2)
+            //不同网页不同代码
+            Element publictime = doc.getElementsByClass("time").first();
+            Log.i(TAG, "run: time="+publictime);
+            Element table = doc.getElementsByTag("table").first();
+            Elements trs = table.getElementsByTag("tr");
+            for(Element td : trs){
+                Elements tds = td.getElementsByTag("td");
+                if (tds.size()>0){
+                    Log.i(TAG, "td : "+tds.get(0).text() + tds.get(1).text());
+                }
+            }
+            /*Element eurotr = table.getElementsByTag("tr").get(8);
+            Element wontr = table.getElementsByTag("tr").get(14);
+            Element dollartr = table.getElementsByTag("tr").get(27);
+            Log.i(TAG, "run: Euro = "+eurotr.getElementsByTag("td").get(1).text());
+            Log.i(TAG, "run: Won = "+wontr.getElementsByTag("td").get(1).text());
+            Log.i(TAG, "run: Dollar = "+dollartr.getElementsByTag("td").get(1).text());*/
 
         }catch (MalformedURLException e){
             e.printStackTrace();

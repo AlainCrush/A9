@@ -55,4 +55,14 @@ public class MainActivity extends AppCompatActivity {
         scoreB = 0;
         showB();
     }
+    protected  void onSaveInstanceSate(Bundle outState){
+        super.onSaveInstanceState(outState);
+        outState.putInt("scoreA",scoreA);
+        outState.putInt("ScoreB",scoreB);
+    }
+    protected void  onRestoreInstanceState(Bundle saveInstanceState){
+        super.onRestoreInstanceState(saveInstanceState);
+        scoreA = saveInstanceState.getInt("scoreA");
+        scoreB = saveInstanceState.getInt("scoreB");
+    }
 }
