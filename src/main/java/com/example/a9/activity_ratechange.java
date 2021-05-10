@@ -11,7 +11,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.w3c.dom.Text;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class activity_ratechange extends AppCompatActivity {
     EditText dollar, euro, won;
@@ -54,6 +61,5 @@ public class activity_ratechange extends AppCompatActivity {
         setResult(2,intent);//设置resultCode并带回数据
         //返回调用页面
         finish();
-
-    }
+        }
 }

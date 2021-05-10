@@ -28,6 +28,8 @@ import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class RateActivity extends AppCompatActivity implements Runnable {
     EditText et;
@@ -38,7 +40,7 @@ public class RateActivity extends AppCompatActivity implements Runnable {
     float wonRate = 171.9f;
     float i = 0;
     Handler handler;
-
+    String time = "0000-00-00";
     private static final String TAG = "RateActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +107,7 @@ public class RateActivity extends AppCompatActivity implements Runnable {
             dollarRate = sp.getFloat("key_dollarRate",0.0f);
             euroRate = sp.getFloat("key_euroRate",0.0f);
             wonRate = sp.getFloat("key_wonRate",0.0f);
+            time = sp.getString("key_updatetime","0000-00-00");
         }
         super.onActivityResult(requestCode,resultCode,data);
     }
@@ -143,30 +146,58 @@ public class RateActivity extends AppCompatActivity implements Runnable {
     @Override
     public void run() {
         URL url =null;
-        try {
+        Date date = new Date();
+        SimpleDateFormat dd = new SimpleDateFormat("yyyy-MM-dd");
+        if (time.equals(dd.format(date))) {
+            Log.i(TAG, "今日汇率已经更新过了！");
+        } else {
+            SharedPreferences sp = getSharedPreferences("myrate", Activity.MODE_PRIVATE);//创建SharePreferences对象用以保存数据
+            SharedPreferences.Editor editor = sp.edit();//获取编辑器
+            editor.putString("key_updatetime",dd.format(date));
+            editor.apply();
+            try {
             /*url =new URL("https://www.usd-cny.com/");
             HttpURLConnection http =(HttpURLConnection)url.openConnection();//连接URL
             InputStream in =http.getInputStream();//返回输入流
 
             String html =inputStream2String(in);//转化为字符串
             Log.i(TAG, "html="+html);*/
-            Document doc = Jsoup.connect("https://www.usd-cny.com/bankofchina.htm").get();
-            Log.i(TAG, "run: title="+doc.title());
-            //获取汇率
-            //Euro:  body > section > div > div > article > table > tbody > tr:nth-child(8) > td:nth-child(2)
-            //Won:   body > section > div > div > article > table > tbody > tr:nth-child(14) > td:nth-child(2)
-            //dollar:body > section > div > div > article > table > tbody > tr:nth-child(27) > td:nth-child(2)
-            //不同网页不同代码
-            Element publictime = doc.getElementsByClass("time").first();
-            Log.i(TAG, "run: time="+publictime);
-            Element table = doc.getElementsByTag("table").first();
-            Elements trs = table.getElementsByTag("tr");
-            for(Element td : trs){
-                Elements tds = td.getElementsByTag("td");
-                if (tds.size()>0){
-                    Log.i(TAG, "td : "+tds.get(0).text() + tds.get(1).text());
-                }
-            }
+                Document doc = Jsoup.connect("https://www.usd-cny.com/bankofchina.htm").get();
+                Log.i(TAG, "run: title=" + doc.title());//获取标题
+                //获取汇率
+                //Euro:  body > section > div > div > article > table > tbody > tr:nth-child(8) > td:nth-child(1)
+                //Won:   body > section > div > div > article > table > tbody > tr:nth-child(14) > td:nth-child(2)
+                //dollar:body > section > div > div > article > table > tbody > tr:nth-child(27) > td:nth-child(1)
+                //不同网页不同代码
+                //获取时间
+                Element publictime = doc.getElementsByClass("time").first();
+                Log.i(TAG, "run: time=" + publictime.text());
+                String re = publictime.text();
+
+                Element table = doc.getElementsByTag("table").first();
+                Elements trs = table.getElementsByTag("tr");
+                //获取dollar汇率:
+                Element dollartr = table.getElementsByTag("tr").get(27);
+                Element dollartd = dollartr.getElementsByTag("td").get(2);
+                Log.i(TAG, "run: "+dollartd.text());
+                dollarRate = Float.parseFloat(dollartd.text())/100;
+                //获取euro:
+                Element eurotr = table.getElementsByTag("tr").get(14);
+                Element eurotd = eurotr.getElementsByTag("td").get(2);
+                Log.i(TAG, "run: "+eurotd.text());
+                euroRate = Float.parseFloat(eurotd.text())/100;
+                //获取won汇率:
+                Element wontr = table.getElementsByTag("tr").get(8);
+                Element wontd = wontr.getElementsByTag("td").get(2);
+                Log.i(TAG, "run: "+wontd.text());
+                wonRate = Float.parseFloat(wontd.text())/100;
+                /*for (Element td : trs) {
+                    Elements tds = td.getElementsByTag("td");
+                    if (tds.size() > 0) {
+                        Log.i(TAG, "td : " + tds.get(0).text() + tds.get(1).text());
+                    }
+                }*/
+
             /*Element eurotr = table.getElementsByTag("tr").get(8);
             Element wontr = table.getElementsByTag("tr").get(14);
             Element dollartr = table.getElementsByTag("tr").get(27);
@@ -174,11 +205,12 @@ public class RateActivity extends AppCompatActivity implements Runnable {
             Log.i(TAG, "run: Won = "+wontr.getElementsByTag("td").get(1).text());
             Log.i(TAG, "run: Dollar = "+dollartr.getElementsByTag("td").get(1).text());*/
 
-        }catch (MalformedURLException e){
-            e.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
+                    }catch(MalformedURLException e){
+                    e.printStackTrace();
+                    }catch(IOException e){
+                    e.printStackTrace();
+                     }
+                 }
         Log.i(TAG, "run: ............");
         //线程完成任务
         //返回线程数据
