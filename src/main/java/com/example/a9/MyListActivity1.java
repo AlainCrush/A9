@@ -47,18 +47,16 @@ public class MyListActivity1 extends AppCompatActivity implements Runnable{
     }
     public void run() {
         try {
-            Document doc = Jsoup.connect("https://www.usd-cny.com/bankofchina.htm").get();
-            Element table = doc.getElementsByTag("table").first();
+            Document doc = Jsoup.connect("https://www.boc.cn/sourcedb/whpj/").get();
+            Element table = doc.getElementsByTag("table").get(1);
+            Log.i(TAG, "run: "+table);
             Elements trs = table.getElementsByTag("tr");
-
             for (Element tr : trs) {
                 Elements data = tr.getElementsByTag("td");
-                if (data.size() > 0) {
-                    list.add(data.get(0).text() + "---->" + data.get(1).text());
-                    Log.i(TAG, "onCreate: run......." + data.get(0).text() + data.get(1).text());
+                if (data.size() > 0&&!data.get(1).text().isEmpty()){//有tr且第二个td不为空则加入
+                    list.add(data.get(0).text() + "------>" + data.get(1).text());
                 }
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
