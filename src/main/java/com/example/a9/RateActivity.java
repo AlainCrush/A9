@@ -169,6 +169,7 @@ public class RateActivity extends AppCompatActivity implements Runnable {
                 //Won:   body > section > div > div > article > table > tbody > tr:nth-child(14) > td:nth-child(2)
                 //dollar:body > section > div > div > article > table > tbody > tr:nth-child(27) > td:nth-child(1)
                 //不同网页不同代码
+
                 //获取时间
                 Element publictime = doc.getElementsByClass("time").first();
                 Log.i(TAG, "run: time=" + publictime.text());
