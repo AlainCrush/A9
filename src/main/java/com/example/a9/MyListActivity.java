@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyListActivity extends ListActivity implements Runnable {
+public class MyListActivity extends ListActivity implements Runnable {//两种列表方法，继承父类或者ListvView控件，可以放字符串数组（长度固定）或者一个列表
     private static final String TAG = "MyListActivity";
     List<String> list = new ArrayList<String>();
     Handler handler;
