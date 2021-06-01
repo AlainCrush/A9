@@ -33,7 +33,7 @@ public class MylistActivity2 extends AppCompatActivity implements Runnable{
 
         //获得控件
         ListView listView = findViewById(R.id.mylist2);
-        ProgressBar progressBar=findViewById(R.id.progressBar);
+        ProgressBar progressBar=findViewById(R.id.progressBar);//获得进度条控件
 
         //开启子线程
         Thread thread = new Thread(this);
@@ -44,10 +44,11 @@ public class MylistActivity2 extends AppCompatActivity implements Runnable{
             public void handleMessage(@NonNull Message msg) {
                 if (msg.what == 7) {
                     ArrayList list1 =(ArrayList<String>)msg.obj;
-                    ListAdapter adapter = new ArrayAdapter<String>(MylistActivity2.this, android.R.layout.simple_list_item_1, list1);
+                    ListAdapter adapter = new ArrayAdapter<String>(MylistActivity2.this,
+                            android.R.layout.simple_list_item_1, list1);
                     listView.setAdapter(adapter);
                     //设置控件
-                    progressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);//设置进度条可视化
                     listView.setVisibility(View.VISIBLE);
                 }
                 super.handleMessage(msg);

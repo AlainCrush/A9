@@ -12,15 +12,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.A9"
         android:usesCleartextTraffic="true">
-        <activity android:name=".RatelistActivity"></activity>
-        <activity android:name=".MylistActivity3">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name=".GridviewActivity">
         </activity>
-        <activity android:name=".MylistActivity2"></activity>
+        <activity android:name=".RatelistActivity" />
+        <activity android:name=".MylistActivity3">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
+        <activity android:name=".MylistActivity2"/>
         <activity android:name=".MyListActivity1" />
         <activity android:name=".MyListActivity" />
         <activity android:name=".MainActivity" />
