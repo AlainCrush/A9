@@ -43,12 +43,5 @@ public class MyTask implements Runnable{
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
-        //线程完成任务
-        //返回线程数据
-
-
-       /* Message msg = handler.obtainMessage(7,list);
-        // msg.obj = "From message";
-        handler.sendMessage(msg);//发送消息*/
     }
 }
